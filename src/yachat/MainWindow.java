@@ -6,11 +6,6 @@
 package yachat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.net.HttpURLConnection; 
-import java.net.URL; 
-import java.net.URLEncoder;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 /**
  *
  * @author yashi
@@ -129,32 +124,28 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
         this.lbl_cmd0.setVisible(true);
-        this.lbl_cmd.setText(this.lbl_cmd.getText() + "\nLooking for IP update...\nConnect to: uuu.moe");
-        String yashiIP = "";
-        try {
-            String getURL = "http://uuu.moe/yachat.txt";
-            // URLEncoder.encode("http://uuu.moe/yachat.txt", "utf-8");
-            URL getUrl = new URL(getURL);
-            HttpURLConnection connection = (HttpURLConnection) getUrl.openConnection();
-            connection.connect();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String lines;
-            while ((lines = reader.readLine()) != null) { 
-                this.lbl_cmd.setText(this.lbl_cmd.getText() + "\n" + lines);
-                yashiIP = lines;
-            }
-            reader.close();
-            connection.disconnect();
-            this.lbl_cmd.setText(this.lbl_cmd.getText() + "\nDisconnect.");
-        } catch(Exception e) {
-            this.lbl_cmd.setText(this.lbl_cmd.getText() + "\nError: " + e);
-        }
-        if (!"".equals(yashiIP)) {
-            this.lbl_cmd.setText(this.lbl_cmd.getText() + "\n\nStart chat...\nConnect to: " + yashiIP);
-            
-        }
+        this.btn_enter.setEnabled(false);
+        this.btn_enter.setText("处理中...");
+        Thread thread = new InitThread(this);
+        thread.start();
+        
+        
     }//GEN-LAST:event_btn_enterActionPerformed
 
+    public void changelblcmd(String txt) {
+        this.lbl_cmd.setText(this.lbl_cmd.getText() + "\n" + txt);
+    }
+    
+    public void threadok(Boolean isOK) {
+        if (isOK) {
+            this.btn_enter.setText("已运行");
+        } else {
+            this.btn_enter.setEnabled(true);
+            this.btn_enter.setText("重试");
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */

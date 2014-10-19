@@ -6,11 +6,33 @@
 package yachat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.jivesoftware.smack.Chat;  
+import org.jivesoftware.smack.ChatManager;  
+import org.jivesoftware.smack.ChatManagerListener;  
+import org.jivesoftware.smack.ConnectionConfiguration;  
+import org.jivesoftware.smack.MessageListener;  
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.XMPPConnection;  
+import org.jivesoftware.smack.XMPPException;  
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
+
+//import org.xmlpull.v1.XmlPullParser;
 /**
  *
  * @author yashi
  */
 public class MainWindow extends javax.swing.JFrame {
+    
+    public static XMPPConnection con;     
+    public static Chat newChat;     
+    public static ChatManager chatmanager; 
+    private ChatWindow cw;
 
     /**
      * Creates new form MainWindow
@@ -26,7 +48,13 @@ public class MainWindow extends javax.swing.JFrame {
         + "'\nSystem.getProperty('java.vendor') == '" + System.getProperty("java.vendor")
         + "'\nSystem.getProperty('sun.arch.data.model') == '" + System.getProperty("sun.arch.data.model")
         + "'\n");
+        
+        
+        
         this.lbl_cmd0.setVisible(false);
+        this.showmore(false);
+        cw = new ChatWindow();
+        cw.mw = this;
     }
 
     /**
@@ -42,10 +70,18 @@ public class MainWindow extends javax.swing.JFrame {
         lbl_cmd0 = new javax.swing.JScrollPane();
         lbl_cmd = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
-        titleimg = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        titleimg = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         btn_enter = new javax.swing.JButton();
+        lbl_username = new javax.swing.JLabel();
+        txt_username = new javax.swing.JTextField();
+        lbl_password = new javax.swing.JLabel();
+        txt_password = new javax.swing.JPasswordField();
+        lbl_pname = new javax.swing.JLabel();
+        txt_pname = new javax.swing.JTextField();
+        btn_more = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("yaChat");
@@ -55,7 +91,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        lbl_cmd.setEditable(false);
         lbl_cmd.setColumns(20);
+        lbl_cmd.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         lbl_cmd.setRows(5);
         lbl_cmd.setText("YaChat started ...");
         lbl_cmd0.setViewportView(lbl_cmd);
@@ -67,8 +105,15 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel2.setText("yaChat");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 200, -1, -1));
 
+        jLabel1.setForeground(new java.awt.Color(255, 204, 255));
+        jLabel1.setText("与雅诗聊天专用应用");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 230, 120, 20));
+
         titleimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/46014541.png"))); // NOI18N
         jPanel1.add(titleimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jLabel5.setText("jLabel5");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 270, -1, -1));
 
         jButton1.setText("退出");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -77,12 +122,33 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("与雅诗聊天专用专用客户端软件。");
-
         btn_enter.setText("继续");
+        btn_enter.setFocusCycleRoot(true);
         btn_enter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_enterActionPerformed(evt);
+            }
+        });
+
+        lbl_username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_username.setText("用户名：");
+
+        txt_username.setText("guest");
+
+        lbl_password.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_password.setText("密码：");
+
+        txt_password.setText("guest");
+
+        lbl_pname.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_pname.setText("联系人：");
+
+        txt_pname.setText("cyshope");
+
+        btn_more.setText("自定义");
+        btn_more.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_moreActionPerformed(evt);
             }
         });
 
@@ -90,28 +156,49 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(6, 6, 6)
+                    .addComponent(btn_more, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lbl_username)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lbl_password)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lbl_pname)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txt_pname, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(btn_enter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(82, 82, 82))
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_enter, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(724, 724, 724)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jLabel1)
-                    .addComponent(btn_enter))
-                .addGap(0, 9, Short.MAX_VALUE))
+                    .addComponent(btn_enter)
+                    .addComponent(lbl_password)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_pname)
+                    .addComponent(txt_pname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_username)
+                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_more))
+                .addContainerGap())
         );
 
         pack();
@@ -119,12 +206,18 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (con != null && con.isConnected()) {
+            con.disconnect();
+        }
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
         this.lbl_cmd0.setVisible(true);
         this.btn_enter.setEnabled(false);
+        this.btn_more.setSelected(false);
+        this.btn_more.setEnabled(false);
+        showmore(false);
         this.btn_enter.setText("处理中...");
         Thread thread = new InitThread(this);
         thread.start();
@@ -132,18 +225,111 @@ public class MainWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btn_enterActionPerformed
 
+    private void btn_moreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_moreActionPerformed
+        showmore(this.btn_more.isSelected());
+    }//GEN-LAST:event_btn_moreActionPerformed
+
+    private void showmore(Boolean sw) {
+        this.lbl_username.setVisible(sw);
+        this.txt_username.setVisible(sw);
+        this.lbl_password.setVisible(sw);
+        this.txt_password.setVisible(sw);
+        this.lbl_pname.setVisible(sw);
+        this.txt_pname.setVisible(sw);
+    }
+    
     public void changelblcmd(String txt) {
         this.lbl_cmd.setText(this.lbl_cmd.getText() + "\n" + txt);
     }
     
     public void threadok(Boolean isOK) {
         if (isOK) {
+            startchat();
             this.btn_enter.setText("已运行");
         } else {
             this.btn_enter.setEnabled(true);
+            this.btn_more.setEnabled(true);
             this.btn_enter.setText("重试");
         }
         
+    }
+    
+    public void startchat() {
+        changelblcmd("Connect chat.uuu.moe ...");
+        String user = this.txt_pname.getText() + "@uuu.moe";
+        String host = "118.193.146.52";
+        int port = 5222;
+        String username = this.txt_username.getText();
+        String password = this.txt_username.getText();
+        Boolean isOK = true;
+        try {
+            changelblcmd("Create a connection to server...");
+            ConnectionConfiguration config = new ConnectionConfiguration(     
+                    host, port);
+            //config.setCompressionEnabled(true);
+            //config.setSASLAuthenticationEnabled(true);
+            con = new XMPPConnection(config);
+            changelblcmd("Connect and login with the username and pwd on server...");
+            con.connect();     
+            con.login(username, password);     
+            changelblcmd("Authenticated = " + con.isAuthenticated());
+            changelblcmd("Add a listener to receive all messages.");
+            addListener();
+            chatmanager = con.getChatManager();
+            newChat = chatmanager.createChat(user,     
+                    new MessageListener() {     
+                        public void processMessage(Chat chat, Message message) {     
+                            System.out.println("I'm sending: "    
+                                    + message.getBody());     
+                        }
+                    });
+            String msg = "(YACHAT-%LINK%)" + username + "正在使用yaChat聊天。";
+            changelblcmd(">> " + msg); 
+            newChat.sendMessage(msg);
+        } catch (Exception e) {     
+            isOK = false;
+            changelblcmd("Error: " + e); 
+            con.disconnect();
+            threadok(false);
+        } finally { 
+            //Thread.sleep(3600000);     
+            //con.disconnect();
+        }
+        if (isOK) {
+            cw.setVisible(true);
+        }
+    }
+    
+    public void outMsg(String msg) {
+        changelblcmd(">> " + msg); 
+        try {
+            newChat.sendMessage(msg);
+        } catch (XMPPException ex) {
+            changelblcmd("Error: " + ex);
+        }
+    }
+    
+    private void addListener() { //static 
+        // just need Messages 
+        PacketFilter filterMessage = new PacketTypeFilter(Message.class);
+        PacketListener myListener = new PacketListener() {     
+            //@Override
+            public void processPacket(Packet packet) {     
+                String message = ((Message) packet).getBody();
+                changelblcmd("<< " + packet.getFrom() + ": " + message);   
+                cw.inMsg(message);
+                // when receiving prc's Message, just say something else again     
+                // and again, robot     
+//                try {     
+//                    newChat.sendMessage("hi again");     
+//                } catch (XMPPException e) {     
+//                    changelblcmd("Error: " + e);      
+//                }     
+            }     
+
+        };
+        // register the listener to the connection     
+        con.addPacketListener(myListener, filterMessage);   
     }
     
     /**
@@ -181,12 +367,20 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_enter;
+    private javax.swing.JToggleButton btn_more;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextArea lbl_cmd;
     private javax.swing.JScrollPane lbl_cmd0;
+    private javax.swing.JLabel lbl_password;
+    private javax.swing.JLabel lbl_pname;
+    private javax.swing.JLabel lbl_username;
     private javax.swing.JLabel titleimg;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_pname;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,10 +5,21 @@
  */
 package yachat;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+
+
+//import java.net.ServerSocket;
+//import java.net.Socket;
+//import java.net.SocketException;
+//
+//import javax.swing.*;
+//import java.awt.*;
+//import java.awt.event.*;
 
 /**
  *
@@ -23,8 +34,9 @@ public class InitThread extends Thread {
     }
     
     public synchronized void startThread() {
-        this.mw.changelblcmd("Looking for IP update...\nConnect to: uuu.moe");
-        String yashiIP = "";
+        String nowver = "0.1";
+        this.mw.changelblcmd("Looking for update...\nConnect to: uuu.moe");
+        String olver = "";
         try {
             String getURL = "http://uuu.moe/yachat.txt";
             // URLEncoder.encode("http://uuu.moe/yachat.txt", "utf-8");
@@ -34,25 +46,26 @@ public class InitThread extends Thread {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String lines;
             while ((lines = reader.readLine()) != null) { 
-                this.mw.changelblcmd(lines);
-                yashiIP = lines;
+                this.mw.changelblcmd("Load data.");
+                olver = lines;
             }
             reader.close();
             connection.disconnect();
             this.mw.changelblcmd("Disconnect.");
-            sleep(1000);
         } catch(Exception e) {
             this.mw.changelblcmd("Error: " + e);
         }
-        
-        if (!yashiIP.equals("")) {
-            this.mw.changelblcmd("\nStart chat...\nConnect to: " + yashiIP);
-            
+        this.mw.changelblcmd("Now Version: "+nowver+"\nLatest Version: " + olver);
+        if (olver.equals(nowver)) {
             this.mw.threadok(true);
         } else {
-            this.mw.changelblcmd("\n\n雅诗当前不在线哦～");
+            this.mw.changelblcmd("你使用的客户端版本已经过期，需要更新的版本才能登录。");
             this.mw.threadok(false);
         }
+    }
+    
+    public void connect() {
+        
     }
     
     @Override

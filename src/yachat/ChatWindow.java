@@ -34,23 +34,30 @@ public class ChatWindow extends javax.swing.JFrame {
         txt_sent = new javax.swing.JTextField();
         btn_sent = new javax.swing.JButton();
         lbl_text = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         img_show = new javax.swing.JLabel();
+        img_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        sel_emo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "正常", "微笑" }));
-        getContentPane().add(sel_emo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 690, 100, 30));
+        sel_emo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "普通表情", "微笑" }));
+        getContentPane().add(sel_emo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 650, 140, 30));
 
-        txt_sent.setText("发送的文本");
+        txt_sent.setText("请在这里输入要发送的文字喵～");
+        txt_sent.setToolTipText("");
         txt_sent.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_sentKeyPressed(evt);
             }
         });
-        getContentPane().add(txt_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 690, 1080, 30));
+        getContentPane().add(txt_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 650, 620, 30));
 
         btn_sent.setText("发送");
         btn_sent.addActionListener(new java.awt.event.ActionListener() {
@@ -58,17 +65,35 @@ public class ChatWindow extends javax.swing.JFrame {
                 btn_sentActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 690, 100, 30));
+        getContentPane().add(btn_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 650, 100, 30));
 
-        lbl_text.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lbl_text.setForeground(new java.awt.Color(102, 0, 153));
+        lbl_text.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lbl_text.setForeground(new java.awt.Color(102, 0, 102));
         lbl_text.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_text.setText("请稍等一下。");
+        lbl_text.setText("嗯……说点什么呢？");
         lbl_text.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        getContentPane().add(lbl_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 570, 1200, 90));
+        getContentPane().add(lbl_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 540, 820, 100));
 
-        img_show.setText("没有载入立绘图片。");
-        getContentPane().add(img_show, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 360, 30));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_backlog_off.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 530, -1, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_save_off.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 580, -1, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_config_off.png"))); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 630, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_erase_off.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 500, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tip_meswindow_back.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, 1160, 200));
+
+        img_show.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/響/響／私服／正／微笑.png"))); // NOI18N
+        getContentPane().add(img_show, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
+
+        img_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/社務所／主人公部屋昼.png"))); // NOI18N
+        getContentPane().add(img_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -167,7 +192,13 @@ public class ChatWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_sent;
+    private javax.swing.JLabel img_bg;
     private javax.swing.JLabel img_show;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lbl_text;
     private javax.swing.JComboBox sel_emo;
     private javax.swing.JTextField txt_sent;

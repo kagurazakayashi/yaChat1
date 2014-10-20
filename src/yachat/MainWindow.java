@@ -85,7 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
         btn_more = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("yaChat");
+        setTitle("yaChat Launcher");
         setLocation(new java.awt.Point(50, 50));
         setName("layer"); // NOI18N
         setResizable(false);
@@ -296,6 +296,7 @@ public class MainWindow extends javax.swing.JFrame {
             //con.disconnect();
         }
         if (isOK) {
+            cw.setTitle("yaChat | Server: chat.uuu.moe | Login User: " + username + " | Chat: " + user + " | Encryption: disabled");
             cw.setVisible(true);
         }
     }

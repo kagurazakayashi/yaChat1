@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package yachat;
-
+import javax.swing.JOptionPane;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -53,13 +53,17 @@ public class InitThread extends Thread {
             connection.disconnect();
             this.mw.changelblcmd("Disconnect.");
         } catch(Exception e) {
+            String errmsg = "" + e;
             this.mw.changelblcmd("Error: " + e);
+            JOptionPane.showMessageDialog(null, "errmsg", "失败", JOptionPane.ERROR_MESSAGE);
         }
         this.mw.changelblcmd("Now Version: "+nowver+"\nLatest Version: " + olver);
         if (olver.equals(nowver)) {
             this.mw.threadok(true);
         } else {
-            this.mw.changelblcmd("你使用的客户端版本已经过期，需要更新的版本才能登录。");
+            String errmsg = "你使用的客户端版本已经过期，需要更新的版本才能登录。";
+            this.mw.changelblcmd(errmsg);
+            JOptionPane.showMessageDialog(null, "errmsg", "失败", JOptionPane.ERROR_MESSAGE);
             this.mw.threadok(false);
         }
     }

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import org.jivesoftware.smack.Chat;  
 import org.jivesoftware.smack.ChatManager;  
@@ -49,12 +50,12 @@ public class MainWindow extends javax.swing.JFrame {
         + "'\nSystem.getProperty('sun.arch.data.model') == '" + System.getProperty("sun.arch.data.model")
         + "'\n");
         
-        
-        
         this.lbl_cmd0.setVisible(false);
         this.showmore(false);
         cw = new ChatWindow();
         cw.mw = this;
+        
+        JOptionPane.showMessageDialog(null, "该软件为专用软件，不要将该软件传给别人以及发布。", "欢迎", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -273,14 +274,13 @@ public class MainWindow extends javax.swing.JFrame {
             con.connect();     
             con.login(username, password);     
             changelblcmd("Authenticated = " + con.isAuthenticated());
-            changelblcmd("Add a listener to receive all messages.");
+            changelblcmd("Add a listener to receive all messages. \n");
             addListener();
             chatmanager = con.getChatManager();
             newChat = chatmanager.createChat(user,     
                     new MessageListener() {     
                         public void processMessage(Chat chat, Message message) {     
-                            System.out.println("I'm sending: "    
-                                    + message.getBody());     
+                            //System.out.println("I'm sending: " + message.getBody());     
                         }
                     });
             String msg = "(YACHAT-%LINK%)" + username + "正在使用yaChat聊天。";

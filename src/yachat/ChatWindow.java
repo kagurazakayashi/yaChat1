@@ -55,6 +55,7 @@ public class ChatWindow extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         sel_emo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "默认表情", "響／私服／横／嘆", "響／私服／横／照困", "響／私服／横／困", "響／私服／横／照驚", "響／私服／横／惚", "響／私服／横／緊張", "響／私服／横／睨", "響／私服／正／きょ", "響／私服／横／素", "響／私服／正／冷笑", "響／私服／横／考", "響／私服／正／微笑", "響／私服／横／驚", "響／私服／正／楽笑", "響／私服／正／怒", "響／私服／正／照怒", "響／私服／正／拗", "響／私服／正／照睨", "響／私服／正／疑", "響／私服／正／照笑", "響／私服／正／睨", "響／私服／正／真剣", "響／私服／正／笑", "響／私服／横／惚／大", "響／私服／横／寂1", "響／私服／横／驚／大", "響／私服／横／涙1", "響／私服／正／照きょ", "響／私服／横／寂2", "響／私服／正／疑／大", "響／私服／横／涙2", "響／私服／正／睨／大", "響／私服／横／嘲笑", "響／私服／横／嘲笑／大", "響／私服／横／微笑", "響／私服／正／照笑／大", "響／私服／横／楽笑" }));
+        sel_emo.setEnabled(false);
         getContentPane().add(sel_emo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 650, 190, 30));
 
         txt_sent.setText("请在这里输入要发送的文字喵～");

@@ -55,7 +55,7 @@ public class InitThread extends Thread {
         } catch(Exception e) {
             String errmsg = "" + e;
             this.mw.changelblcmd("Error: " + e);
-            JOptionPane.showMessageDialog(null, "errmsg", "失败", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, errmsg, "失败", JOptionPane.ERROR_MESSAGE);
         }
         this.mw.changelblcmd("Now Version: "+nowver+"\nLatest Version: " + olver);
         if (olver.equals(nowver)) {
@@ -63,7 +63,7 @@ public class InitThread extends Thread {
         } else {
             String errmsg = "你使用的客户端版本已经过期，需要更新的版本才能登录。";
             this.mw.changelblcmd(errmsg);
-            JOptionPane.showMessageDialog(null, "errmsg", "失败", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, errmsg, "失败", JOptionPane.ERROR_MESSAGE);
             this.mw.threadok(false);
         }
     }

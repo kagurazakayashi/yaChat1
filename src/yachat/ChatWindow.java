@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package yachat;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 /**
  *
@@ -34,21 +35,27 @@ public class ChatWindow extends javax.swing.JFrame {
         txt_sent = new javax.swing.JTextField();
         btn_sent = new javax.swing.JButton();
         lbl_text = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        btn_log = new javax.swing.JLabel();
+        btn_save = new javax.swing.JLabel();
+        btn_config = new javax.swing.JLabel();
+        btn_hidemsgbox = new javax.swing.JLabel();
+        img_messagebox = new javax.swing.JLabel();
         img_show = new javax.swing.JLabel();
         img_bg = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        sel_emo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "普通表情", "微笑" }));
-        getContentPane().add(sel_emo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 650, 140, 30));
+        sel_emo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "默认表情", "響／私服／横／嘆", "響／私服／横／照困", "響／私服／横／困", "響／私服／横／照驚", "響／私服／横／惚", "響／私服／横／緊張", "響／私服／横／睨", "響／私服／正／きょ", "響／私服／横／素", "響／私服／正／冷笑", "響／私服／横／考", "響／私服／正／微笑", "響／私服／横／驚", "響／私服／正／楽笑", "響／私服／正／怒", "響／私服／正／照怒", "響／私服／正／拗", "響／私服／正／照睨", "響／私服／正／疑", "響／私服／正／照笑", "響／私服／正／睨", "響／私服／正／真剣", "響／私服／正／笑", "響／私服／横／惚／大", "響／私服／横／寂1", "響／私服／横／驚／大", "響／私服／横／涙1", "響／私服／正／照きょ", "響／私服／横／寂2", "響／私服／正／疑／大", "響／私服／横／涙2", "響／私服／正／睨／大", "響／私服／横／嘲笑", "響／私服／横／嘲笑／大", "響／私服／横／微笑", "響／私服／正／照笑／大", "響／私服／横／楽笑" }));
+        getContentPane().add(sel_emo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 650, 190, 30));
 
         txt_sent.setText("请在这里输入要发送的文字喵～");
         txt_sent.setToolTipText("");
@@ -57,7 +64,7 @@ public class ChatWindow extends javax.swing.JFrame {
                 txt_sentKeyPressed(evt);
             }
         });
-        getContentPane().add(txt_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 650, 620, 30));
+        getContentPane().add(txt_sent, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 650, 570, 30));
 
         btn_sent.setText("发送");
         btn_sent.addActionListener(new java.awt.event.ActionListener() {
@@ -74,26 +81,49 @@ public class ChatWindow extends javax.swing.JFrame {
         lbl_text.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         getContentPane().add(lbl_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 540, 820, 100));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_backlog_off.png"))); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 530, -1, -1));
+        btn_log.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_backlog_off.png"))); // NOI18N
+        btn_log.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_logMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btn_log, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 530, -1, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_save_off.png"))); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 580, -1, -1));
+        btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_save_off.png"))); // NOI18N
+        btn_save.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_saveMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btn_save, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 580, -1, -1));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_config_off.png"))); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 630, -1, -1));
+        btn_config.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_config_off.png"))); // NOI18N
+        btn_config.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_configMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btn_config, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 630, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_erase_off.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 500, -1, -1));
+        btn_hidemsgbox.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/btn_erase_off.png"))); // NOI18N
+        btn_hidemsgbox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_hidemsgboxMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btn_hidemsgbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 500, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tip_meswindow_back.png"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, 1160, 200));
+        img_messagebox.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tip_meswindow_back.png"))); // NOI18N
+        getContentPane().add(img_messagebox, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, 1160, 200));
 
         img_show.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/響/響／私服／正／微笑.png"))); // NOI18N
         getContentPane().add(img_show, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         img_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/社務所／主人公部屋昼.png"))); // NOI18N
         getContentPane().add(img_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 190, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -115,6 +145,26 @@ public class ChatWindow extends javax.swing.JFrame {
     private void btn_sentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sentActionPerformed
         sentMessage();
     }//GEN-LAST:event_btn_sentActionPerformed
+
+    private void btn_hidemsgboxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hidemsgboxMouseClicked
+        msgboxshowhide();
+    }//GEN-LAST:event_btn_hidemsgboxMouseClicked
+
+    private void btn_logMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_logMouseClicked
+        JOptionPane.showMessageDialog(null, "暂时不提供聊天记录功能", "失败", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btn_logMouseClicked
+
+    private void btn_saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_saveMouseClicked
+        JOptionPane.showMessageDialog(null, "暂时不提供导出功能", "失败", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btn_saveMouseClicked
+
+    private void btn_configMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_configMouseClicked
+        JOptionPane.showMessageDialog(null, "暂时不提供软件设置功能", "失败", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btn_configMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        //mw.connection.disconnect();
+    }//GEN-LAST:event_formWindowClosing
 
     private void sentMessage() {
         String message = txt_sent.getText();
@@ -178,10 +228,15 @@ public class ChatWindow extends javax.swing.JFrame {
                 emoticon += nowChar;
             }
         }
-        this.img_show.setText("未读取表情立绘：" + emoticon);
+        //this.img_show.setText("未读取表情立绘：" + emoticon);
+            ImageIcon icon = new ImageIcon(getClass().getResource("/image/響/" + emoticon + ".png"));
+            if (icon.getImage() != null) {
+                this.img_show.setIcon(icon);
+            }
         } else {
             message = msg;
-            this.img_show.setText("未读取表情立绘：无表情");
+            //this.img_show.setText("未读取表情立绘：无表情");
+            
         }
         
         CharShow thread = new CharShow();
@@ -189,16 +244,29 @@ public class ChatWindow extends javax.swing.JFrame {
         thread.showText = message;
         thread.start();
     }
+    
+    private void msgboxshowhide() {
+        Boolean sh = !img_messagebox.isVisible();
+        btn_config.setVisible(sh);
+        btn_log.setVisible(sh);
+        btn_save.setVisible(sh);
+        btn_sent.setVisible(sh);
+        img_messagebox.setVisible(sh);
+        lbl_text.setVisible(sh);
+        sel_emo.setVisible(sh);
+        txt_sent.setVisible(sh);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btn_config;
+    private javax.swing.JLabel btn_hidemsgbox;
+    private javax.swing.JLabel btn_log;
+    private javax.swing.JLabel btn_save;
     private javax.swing.JButton btn_sent;
     private javax.swing.JLabel img_bg;
+    private javax.swing.JLabel img_messagebox;
     private javax.swing.JLabel img_show;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl_text;
     private javax.swing.JComboBox sel_emo;
     private javax.swing.JTextField txt_sent;

@@ -55,7 +55,7 @@ public class MainWindow extends javax.swing.JFrame {
         cw = new ChatWindow();
         cw.mw = this;
         
-        JOptionPane.showMessageDialog(null, "该软件为专用软件，不要将该软件传给别人以及发布。", "欢迎", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "该软件为与雅诗聊天专用软件，不要将该软件传给别人。", "欢迎", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -89,6 +89,11 @@ public class MainWindow extends javax.swing.JFrame {
         setLocation(new java.awt.Point(50, 50));
         setName("layer"); // NOI18N
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -108,7 +113,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel1.setForeground(new java.awt.Color(255, 204, 255));
         jLabel1.setText("与雅诗聊天专用应用");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 230, 120, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 240, 120, 20));
 
         titleimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/46014541.png"))); // NOI18N
         jPanel1.add(titleimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -229,6 +234,13 @@ public class MainWindow extends javax.swing.JFrame {
     private void btn_moreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_moreActionPerformed
         showmore(this.btn_more.isSelected());
     }//GEN-LAST:event_btn_moreActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (con != null && con.isConnected()) {
+            con.disconnect();
+        }
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
 
     private void showmore(Boolean sw) {
         this.lbl_username.setVisible(sw);

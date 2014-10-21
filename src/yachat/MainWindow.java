@@ -212,12 +212,22 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (con != null && con.isConnected()) {
-            con.disconnect();
-        }
-        System.exit(0);
+        exit();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void exit() {
+        if (con != null && con.isConnected()) {
+            try {
+                con.disconnect();
+            } catch (Exception e) {
+                System.exit(0);
+            }
+        }
+        //System.exit(0);
+        dispose();
+        System.exit(-1);
+    }
+    
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
         this.lbl_cmd0.setVisible(true);
         this.btn_enter.setEnabled(false);
@@ -236,10 +246,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_moreActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (con != null && con.isConnected()) {
-            con.disconnect();
-        }
-        System.exit(0);
+        exit();
     }//GEN-LAST:event_formWindowClosing
 
     private void showmore(Boolean sw) {
